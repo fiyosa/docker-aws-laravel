@@ -11,9 +11,6 @@ RUN docker-php-ext-install pdo pdo_pgsql
 # Set working directory
 WORKDIR /app
 
-# Copy seluruh isi proyek Laravel ke dalam container
-COPY --from:composer ./app ./
-
 RUN php artisan route:clear
 
 RUN php artisan cache:clear
