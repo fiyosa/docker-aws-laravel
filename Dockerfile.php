@@ -16,7 +16,7 @@ COPY --from=composer:lts  ./ ./
 RUN ls
 
 RUN cd /app
-RUN cd ls
+RUN ls
 
 RUN php artisan route:clear
 
