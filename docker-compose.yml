@@ -5,7 +5,10 @@ networks:
 
 services:
     nginx:
-        image: nginx:stable-alpine
+        build:
+            context: ./
+            dockerfile: Dockerfile.nginx
+        container_name: laravel-nginx
         ports:
             - "8080:8080"
         volumes:
@@ -13,17 +16,18 @@ services:
         depends_on:
             - composer
             - php
-        restart: always
+        restart: unless-stopped
         networks:
             - laravel
 
     php:
         build:
-            context: .
+            context: ./
             dockerfile: Dockerfile.php
+        container_name: laravel-oho
         ports:
             - "8081:8081"
-        restart: always
+        restart: unless-stopped
         depends_on:
             - composer
         networks:
@@ -33,9 +37,10 @@ services:
         build:
             context: ./
             dockerfile: Dockerfile.composer
+        container_name: laravel-composer
         volumes:
             - ./:/app
         working_dir: /app
-        restart: always
+        restart: unless-stopped
         networks:
             - laravel
