@@ -9,19 +9,10 @@ RUN apt-get update && apt-get install -y \
 RUN docker-php-ext-install pdo pdo_pgsql
 
 # Set working directory
-WORKDIR /var/www/html
-
-# Copy file composer.json dan composer.lock ke dalam container
-COPY composer.json ./
-
-# Install dependencies menggunakan Composer
-RUN composer install --no-scripts --no-autoloader
+WORKDIR /app
 
 # Copy seluruh isi proyek Laravel ke dalam container
-COPY . .
-
-# Autoload Composer
-RUN composer dump-autoload --optimize
+COPY --from:composer ./app ./
 
 RUN php artisan route:clear
 

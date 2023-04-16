@@ -1,4 +1,4 @@
-FROM composer:lts AS composer-builder
+FROM composer:lts 
 
 # Set working directory
 WORKDIR /app
