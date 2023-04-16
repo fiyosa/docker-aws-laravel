@@ -6,6 +6,8 @@ COPY ./composer.json ./
 
 RUN composer install
 
+COPY ./ ./
+
 RUN composer dump-autoload
 
 FROM php:8.1.18-zts-alpine3.17 AS php-builder
@@ -26,6 +28,6 @@ FROM nginx:stable-alpine
 
 COPY --from=php-builder /app /usr/share/nginx/html
 
-COPY ./nginx/default.conf /etc/nginx/conf.d/default.conf
+COPY ./docker/nginx/default.conf /etc/nginx/conf.d/default.conf
 
 EXPOSE 8080

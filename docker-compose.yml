@@ -6,8 +6,8 @@ networks:
 services:
     nginx:
         build:
-            context: ./docker
-            dockerfile: nginx.dockerfile
+            context: ./
+            dockerfile: Dockerfile
         container_name: laravel-nginx
         ports:
             - 8080:8080
@@ -16,21 +16,5 @@ services:
         depends_on:
             - composer
             - php
-        networks:
-            - laravel
-
-    composer:
-        build:
-            context: ./docker
-            dockerfile: composer.dockerfile
-        networks:
-            - laravel
-
-    php:
-        build:
-            context: ./docker
-            dockerfile: php.dockerfile
-        depends_on:
-            - composer
         networks:
             - laravel
