@@ -2,11 +2,35 @@ version: "3"
 
 services:
     nginx:
-        build:
-            context: ./
-            dockerfile: Dockerfile
-        container_name: laravel-nginx
+        image: nginx:latest
         ports:
-            - 8080:8080
-        environment:
-            NODE_ENV: development
+            - "8080:8080"
+        volumes:
+            - ./:/var/www/html
+            - ./nginx/default.conf:/etc/nginx/conf.d/default.conf
+        depends_on:
+            - php # Tambahkan dependensi service php
+        restart: always
+        networks:
+            - laravel
+
+    php:
+        build:
+            context: .
+            dockerfile: Dockerfile.php
+        ports:
+            - "8081:8081"
+        volumes:
+            - ./:/var/www/html
+        restart: always
+        networks:
+            - laravel
+
+    composer:
+        image: composer:latest
+        volumes:
+            - ./:/var/www/html
+        working_dir: /var/www/html
+        restart: always
+        networks:
+            - laravel
