@@ -1,4 +1,4 @@
-FROM php:8.1.18-fpm-alpine3.17 AS php-builder
+FROM 8.1.18-fpm AS php-builder
 
 RUN apt-get update && apt-get install -y \
     git \
