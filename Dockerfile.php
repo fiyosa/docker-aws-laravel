@@ -11,7 +11,7 @@ RUN docker-php-ext-install pdo pdo_pgsql
 # Set working directory
 WORKDIR /app
 
-COPY --from=composer:lts  ./ /app
+COPY --from=composer:lts  ./ ./
 
 RUN ls
 
