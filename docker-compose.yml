@@ -1,38 +1,12 @@
 version: "3"
 
-networks:
-    laravel:
-
 services:
-    composer:
-        build:
-            context: ./
-            dockerfile: Dockerfile.composer
-        container_name: laravel-composer
-        networks:
-            - laravel
-
-    php:
-        build:
-            context: ./
-            dockerfile: Dockerfile.php
-        container_name: laravel-php
-        depends_on:
-            - composer
-        networks:
-            - laravel
-
     nginx:
         build:
             context: ./
-            dockerfile: Dockerfile.nginx
+            dockerfile: Dockerfile
         container_name: laravel-nginx
         ports:
             - 8080:8080
         environment:
             NODE_ENV: development
-        depends_on:
-            - composer
-            - php
-        networks:
-            - laravel
