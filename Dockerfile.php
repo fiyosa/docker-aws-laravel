@@ -1,4 +1,4 @@
-FROM php:8.1.18-zts-alpine3.17 AS php-builder
+FROM php:8.1.18-fpm-alpine3.17 AS php-builder
 
 RUN apt-get update && apt-get install -y \
     git \
@@ -6,8 +6,6 @@ RUN apt-get update && apt-get install -y \
     unzip
 
 # Set working directory
-WORKDIR /var/www/html
-
 WORKDIR /app
 
 # Copy file composer.json
