@@ -19,16 +19,12 @@ RUN composer dump-autoload --optimize
 
 FROM php:8.1.18-fpm AS php-builder
 
+# Install dependensi PHP dan PHP-FPM
 RUN apt-get update && apt-get install -y \
     git \
     zip \
-    unzip
-
-# Install dependensi PHP dan PHP-FPM
-RUN apt-get update && apt-get install -y \
-    libzip-dev \
     unzip \
-    && docker-php-ext-install zip
+    libpq-dev
 
 RUN docker-php-ext-install pdo pdo_pgsql
 
