@@ -7,7 +7,7 @@ services:
     nginx:
         build:
             context: ./docker
-            dockerFile: Dockerfile
+            dockerFile: nginx.dockerfile
         container_name: laravel-nginx
         ports:
             - 8080:8080
