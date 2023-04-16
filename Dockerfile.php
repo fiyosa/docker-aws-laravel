@@ -13,6 +13,8 @@ WORKDIR /app
 
 COPY --from=composer:lts  ./ /app
 
+RUN ls
+
 RUN php artisan route:clear
 
 RUN php artisan cache:clear
