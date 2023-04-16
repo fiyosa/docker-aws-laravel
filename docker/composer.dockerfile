@@ -1,11 +1,16 @@
-FROM composer:lts AS composer-builder
+FROM composer:lts
 
+# Set working directory
 WORKDIR /app
 
-COPY ../composer.json ./
+# Copy file composer.json dan composer.lock ke dalam container
+COPY composer.json ./
 
-RUN composer install
+# Install dependencies menggunakan Composer
+RUN composer install --no-scripts --no-autoloader
 
-COPY ../ ./
+# Copy seluruh isi proyek Laravel ke dalam container
+COPY . .
 
-RUN composer dump-autoload
+# Autoload Composer
+RUN composer dump-autoload --optimize
