@@ -24,12 +24,6 @@ RUN apt-get update && apt-get install -y \
     zip \
     unzip
 
-# Set working directory
-WORKDIR /app
-
-# Copy file composer.json
-COPY --from=composer-builder /app ./
-
 # Install dependensi PHP dan PHP-FPM
 RUN apt-get update && apt-get install -y \
     libzip-dev \
@@ -38,12 +32,21 @@ RUN apt-get update && apt-get install -y \
 
 RUN docker-php-ext-install pdo pdo_pgsql
 
+# Set working directory
+WORKDIR /app
+
+# Copy file composer.json
+COPY --from=composer-builder /app ./
+
 RUN php artisan route:clear
 
 RUN php artisan cache:clear
 
 RUN php artisan optimize:clear
 
-EXPOSE 8081
+FROM nginx:stable-alpine
 
-CMD ["php-fpm"]
+COPY --from=php-builder /app /usr/share/nginx/html
+COPY ./nginx/default.conf /etc/nginx/conf.d/default.conf
+
+EXPOSE 8080
