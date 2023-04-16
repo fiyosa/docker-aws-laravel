@@ -1,3 +1,5 @@
+FROM php:8.1.18-zts-alpine3.17 AS php-builder
+
 FROM composer:lts AS composer-builder
 
 WORKDIR /app
@@ -9,12 +11,6 @@ RUN composer install
 COPY ./ ./
 
 RUN composer dump-autoload
-
-FROM php:8.1.18-zts-alpine3.17 AS php-builder
-
-WORKDIR /app
-
-COPY --from=composer-builder /app ./
 
 RUN php artisan route:clear
 
