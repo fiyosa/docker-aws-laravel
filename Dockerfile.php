@@ -11,6 +11,8 @@ RUN docker-php-ext-install pdo pdo_pgsql
 # Set working directory
 WORKDIR /app
 
+COPY --from=composer /app ./
+
 RUN php artisan route:clear
 
 RUN php artisan cache:clear
