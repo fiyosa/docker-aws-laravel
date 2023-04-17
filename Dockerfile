@@ -17,7 +17,7 @@ RUN composer dump-autoload --optimize
 
 # ==================================================================================
 
-FROM php:8.1.18-fpm-alpine3.17 AS php-builder
+FROM php:8.1.18-fpm AS php-builder
 
 # Install dependensi PHP dan PHP-FPM
 RUN apt-get update && apt-get install -y \
