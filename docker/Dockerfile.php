@@ -36,6 +36,7 @@ RUN apk update \
     icu \
     imap c-client \
     tidyhtml \
+    libpq-dev \
     freetype libpng libjpeg-turbo \
     && apk add --update --no-cache --virtual .build-ext-deps $PHP_INSTALL_EXT_DEPS \
     && docker-php-ext-configure zip \
