@@ -31,6 +31,6 @@ RUN php artisan cache:clear
 
 RUN php artisan optimize:clear
 
-EXPOSE 8000
+EXPOSE 8081
 
 CMD ["php-fpm"]
