@@ -42,8 +42,11 @@ RUN apk update \
     && docker-php-ext-configure imap --with-imap --with-imap-ssl \
     && docker-php-ext-configure opcache --enable-opcache \
     && docker-php-ext-configure gd --with-freetype --with-jpeg \
-    && docker-php-ext-install -j$(nproc) pdo_pgsql pdo_mysql zip intl imap tidy pcntl opcache bcmath gd \
+    && docker-php-ext-install -j$(nproc) pdo_mysql zip intl imap tidy pcntl opcache bcmath gd \
     && apk del .build-ext-deps
+
+RUN docker-php-ext-configure pgsql -with-pgsql=/usr/local/pgsql && \
+    docker-php-ext-install pdo pdo_pgsql
 
 RUN apk --update add --virtual build-dependencies build-base openssl-dev autoconf \
   && pecl install mongodb \
