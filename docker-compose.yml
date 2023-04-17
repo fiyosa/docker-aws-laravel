@@ -26,7 +26,7 @@ services:
         image: laravel/laravel-nginx
         container_name: laravel-nginx
         ports:
-            - 8001:8001
+            - 8080:8080
         working_dir: /var/www/html
         restart: unless-stopped
         depends_on:
