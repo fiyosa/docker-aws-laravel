@@ -1,6 +1,8 @@
 FROM php:8.1.18-fpm
 
 COPY --from=composer:2.5.5 /usr/bin/composer /usr/bin/composer
+RUN chmod +x /usr/bin/composer
+ENV COMPOSER_ALLOW_SUPERUSER 1
 
 # Install dependensi PHP dan PHP-FPM
 RUN apt-get update && apt-get install -y \
@@ -18,7 +20,7 @@ WORKDIR /var/www/html
 COPY ./ ./
 
 # Install dependencies menggunakan Composer
-RUN composer install --no-scripts --no-autoloader
+RUN composer install --no-scripts --no-autoloader --no-progress --no-interaction
 
 # Autoload Composer
 RUN composer dump-autoload --optimize
@@ -28,7 +30,5 @@ RUN php artisan route:clear
 RUN php artisan cache:clear
 
 RUN php artisan optimize:clear
-
-CMD ['php','artisan','serve']
 
 EXPOSE 8081
