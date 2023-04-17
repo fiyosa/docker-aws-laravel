@@ -40,10 +40,4 @@ RUN php artisan cache:clear
 
 RUN php artisan optimize:clear
 
-FROM nginx:stable-alpine
-
-COPY --from=php-builder /app /usr/share/nginx
-
-COPY ./nginx/default.conf /etc/nginx/conf.d/default.conf
-
-EXPOSE 8080
+EXPOSE 8081
