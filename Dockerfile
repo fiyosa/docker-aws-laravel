@@ -47,5 +47,3 @@ COPY --from=php-builder /app /app
 COPY ./nginx/default.conf /etc/nginx/conf.d/default.conf
 
 EXPOSE 8080
-
-CMD ["sh", "-c", "nginx -g 'daemon off;' & php-fpm"]
