@@ -18,10 +18,7 @@ services:
             - laravel
 
     nginx:
-        build:
-            context: ./
-            dockerfile: Dockerfile.nginx
-        image: laravel/laravel-nginx
+        image: nginx:stable-alpine
         container_name: laravel-nginx
         volumes:
             - ./:/app
