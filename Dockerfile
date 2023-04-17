@@ -1,4 +1,15 @@
-FROM composer:2.5.5 AS composer-builder
+FROM php:8.1.18-fpm
+
+COPY --from=composer:2.0 /usr/bin/composer /usr/bin/composer
+
+# Install dependensi PHP dan PHP-FPM
+RUN apt-get update && apt-get install -y \
+    git \
+    zip \
+    unzip \
+    libpq-dev
+
+RUN docker-php-ext-install pdo pdo_pgsql
 
 # Set working directory
 WORKDIR /app
@@ -14,25 +25,6 @@ COPY . .
 
 # Autoload Composer
 RUN composer dump-autoload --optimize
-
-# ==================================================================================
-
-FROM php:8.1.18-fpm AS php-builder
-
-# Install dependensi PHP dan PHP-FPM
-RUN apt-get update && apt-get install -y \
-    git \
-    zip \
-    unzip \
-    libpq-dev
-
-RUN docker-php-ext-install pdo pdo_pgsql
-
-# Set working directory
-WORKDIR /app
-
-# Copy file composer.json
-COPY --from=composer-builder /app ./
 
 RUN php artisan route:clear
 
