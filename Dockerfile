@@ -42,7 +42,7 @@ RUN php artisan optimize:clear
 
 FROM nginx:stable-alpine
 
-COPY --from=php-builder /app /app
+COPY --from=php-builder /app /usr/share/nginx
 
 COPY ./nginx/default.conf /etc/nginx/conf.d/default.conf
 
