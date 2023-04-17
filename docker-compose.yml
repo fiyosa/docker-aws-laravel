@@ -4,46 +4,65 @@ networks:
     laravel:
 
 services:
-    nginx:
+    app:
         build:
-            context: ./
-            dockerfile: Dockerfile.nginx
+            context: ./dockerfiles
+            dockerfile: nginx.dockerfile
+            args:
+                - UID=${UID:-1000}
+                - GID=${GID:-1000}
         container_name: laravel-nginx
         ports:
-            - "8080:8080"
+            - 8080:8080
         volumes:
-            - ./:/app
+            - ./:/var/www/html:delegated
         depends_on:
-            - composer
             - php
-        restart: unless-stopped
         networks:
             - laravel
 
     php:
         build:
-            context: ./
-            dockerfile: Dockerfile.php
+            context: ./dockerfiles
+            dockerfile: php.dockerfile
+            args:
+                - UID=${UID:-1000}
+                - GID=${GID:-1000}
         container_name: laravel-php
-        ports:
-            - "8081:8081"
-        links:
-            - composer
-        restart: unless-stopped
-        working_dir: /app
-        depends_on:
-            - composer
+        volumes:
+            - ./:/var/www/html
         networks:
             - laravel
 
     composer:
         build:
-            context: ./
-            dockerfile: Dockerfile.composer
+            context: ./dockerfiles
+            dockerfile: composer.dockerfile
+            args:
+                - UID=${UID:-1000}
+                - GID=${GID:-1000}
         container_name: laravel-composer
         volumes:
-            - ./:/app
-        working_dir: /app
-        restart: unless-stopped
+            - ./:/var/www/html
+        working_dir: /var/www/html
+        depends_on:
+            - php
+        user: laravel
+        entrypoint: ["composer", "--ignore-platform-reqs"]
+        networks:
+            - laravel
+
+    artisan:
+        build:
+            context: ./dockerfiles
+            dockerfile: php.dockerfile
+            args:
+                - UID=${UID:-1000}
+                - GID=${GID:-1000}
+        container_name: laravel-artisan
+        volumes:
+            - ./:/var/www/html
+        working_dir: /var/www/html
+        entrypoint: ["php", "/var/www/html/artisan"]
         networks:
             - laravel
