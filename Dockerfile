@@ -12,7 +12,7 @@ RUN apt-get update && apt-get install -y \
 RUN docker-php-ext-install pdo pdo_pgsql
 
 # Set working directory
-WORKDIR /app
+WORKDIR /var/www/html
 
 # Copy file composer.json dan composer.lock ke dalam container
 COPY ./ ./
@@ -28,5 +28,7 @@ RUN php artisan route:clear
 RUN php artisan cache:clear
 
 RUN php artisan optimize:clear
+
+CMD ['php','artisan','serve']
 
 EXPOSE 8081

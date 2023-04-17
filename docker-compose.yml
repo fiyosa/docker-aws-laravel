@@ -11,7 +11,8 @@ services:
         image: laravel/laravel-app
         container_name: laravel-app
         volumes:
-            - ./:/app
+            - ./:/var/www/html
+        working_dir: /var/www/html
         ports:
             - 8081:8081
         networks:
@@ -25,7 +26,7 @@ services:
         container_name: laravel-nginx
         ports:
             - 8080:8080
-        working_dir: /app
+        working_dir: /var/www/html
         depends_on:
             - app
         networks:
