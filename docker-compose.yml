@@ -7,7 +7,7 @@ services:
     app:
         build:
             context: ./docker
-            dockerfile: nginx.dockerfile
+            dockerfile: Dockerfile.nginx
             args:
                 - UID=${UID:-1000}
                 - GID=${GID:-1000}
@@ -15,7 +15,7 @@ services:
         ports:
             - 8080:8080
         volumes:
-            - ./:/var/www/html:delegated
+            - ./:/var/www/html
         depends_on:
             - php
         networks:
@@ -24,7 +24,7 @@ services:
     php:
         build:
             context: ./docker
-            dockerfile: php.dockerfile
+            dockerfile: Dockerfile.php
             args:
                 - UID=${UID:-1000}
                 - GID=${GID:-1000}
@@ -37,7 +37,7 @@ services:
     composer:
         build:
             context: ./docker
-            dockerfile: composer.dockerfile
+            dockerfile: Dockerfile.composer
             args:
                 - UID=${UID:-1000}
                 - GID=${GID:-1000}
@@ -55,7 +55,7 @@ services:
     artisan:
         build:
             context: ./docker
-            dockerfile: php.dockerfile
+            dockerfile: Dockerfile.php
             args:
                 - UID=${UID:-1000}
                 - GID=${GID:-1000}
