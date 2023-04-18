@@ -4,7 +4,7 @@ COPY --from=composer:2.5.5 /usr/bin/composer /usr/bin/composer
 RUN chmod +x /usr/bin/composer
 ENV COMPOSER_ALLOW_SUPERUSER 1
 
-COPY --from=node:14.21.3-alpine3.17 /usr/local/bin/node /usr/local/bin/
+COPY --from=node:14.21.3-alpine3.17 /usr/local/bin/ /usr/local/bin/
 
 # Menambahkan jalur direktori bin Node.js ke variabel lingkungan PATH
 ENV PATH="/usr/local/bin:${PATH}"
