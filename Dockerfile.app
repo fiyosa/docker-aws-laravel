@@ -9,14 +9,28 @@ COPY --from=node:14.21.3-slim /usr/local/lib/node_modules /usr/local/lib/node_mo
 COPY --from=node:14.21.3-slim /usr/local/bin/node /usr/local/bin/node
 RUN ln -s /usr/local/lib/node_modules/npm/bin/npm-cli.js /usr/local/bin/npm
 
-# Install dependensi PHP dan PHP-FPM
+# Install dependencies
 RUN apt-get update && apt-get install -y \
-    git \
+    build-essential \
+    libpng-dev \
+    libjpeg62-turbo-dev \
+    libfreetype6-dev \
+    locales \
     zip \
+    jpegoptim optipng pngquant gifsicle \
+    vim \
     unzip \
-    libpq-dev
+    git \
+    curl \
+    libzip-dev
 
-RUN docker-php-ext-install pdo pdo_pgsql
+# Clear cache
+RUN apt-get clean && rm -rf /var/lib/apt/lists/*
+
+# Install extensions
+RUN docker-php-ext-install pdo_mysql mbstring zip exif pcntl
+RUN docker-php-ext-configure gd --with-gd --with-freetype-dir=/usr/include/ --with-jpeg-dir=/usr/include/ --with-png-dir=/usr/include/
+RUN docker-php-ext-install gd
 
 # Add user for laravel application
 RUN groupadd -g 1000 www
