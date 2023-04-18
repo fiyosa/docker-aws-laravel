@@ -1,3 +1,4 @@
+FROM node:latest AS node
 FROM php:8.1.18-fpm
 
 COPY --from=composer:2.5.5 /usr/bin/composer /usr/bin/composer
@@ -11,8 +12,8 @@ RUN apt-get update && apt-get install -y \
     unzip \
     libpq-dev
     
-COPY --from=node:14.21.3-alpine3.17 /usr/local/lib/node_modules /usr/local/lib/node_modules
-COPY --from=node:14.21.3-alpine3.17 /usr/local/bin/node /usr/local/bin/node
+COPY --from=node /usr/local/lib/node_modules /usr/local/lib/node_modules
+COPY --from=node /usr/local/bin/node /usr/local/bin/node
 RUN ln -s /usr/local/lib/node_modules/npm/bin/npm-cli.js /usr/local/bin/npm
 
 # RUN docker-php-ext-install pdo pdo_pgsql
