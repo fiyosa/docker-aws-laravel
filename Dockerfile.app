@@ -35,7 +35,7 @@ RUN composer install --no-scripts --no-progress --no-interaction
 # Autoload Composer
 RUN composer dump-autoload --optimize
 
-RUN chmod -R 777 storage && sudo chmod -R 777 bootstrap/cache
+RUN sudo chmod -R 777 storage && sudo chmod -R 777 bootstrap/cache
 
 RUN php artisan route:clear
 
