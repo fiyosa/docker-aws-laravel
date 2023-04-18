@@ -1,11 +1,5 @@
 FROM php:8.1.18-fpm
 
-ARG UID
-ARG GID
-
-ENV UID=${UID}
-ENV GID=${GID}
-
 # add composer to image app
 COPY --from=composer:2.5.5 /usr/bin/composer /usr/bin/composer
 RUN chmod +x /usr/bin/composer
@@ -34,15 +28,11 @@ RUN apt-get update && apt-get install -y \
 RUN apt-get clean && rm -rf /var/lib/apt/lists/*
 
 # Add user for laravel application
-RUN addgroup -g ${GID} --system laravel
-RUN adduser -G laravel --system -D -s /bin/sh -u ${UID} laravel
-
-RUN sed -i "s/user = www-data/user = laravel/g" /usr/local/etc/php-fpm.d/www.conf
-RUN sed -i "s/group = www-data/group = laravel/g" /usr/local/etc/php-fpm.d/www.conf
-RUN echo "php_admin_flag[log_errors] = on" >> /usr/local/etc/php-fpm.d/www.conf
+RUN groupadd -g 1000 www
+RUN useradd -u 1000 -ms /bin/bash -g www www
 
 # Set working directory
-WORKDIR /var/www
+WORKDIR /var/www/
 
 # Copy file composer.json dan composer.lock ke dalam container
 COPY ./ ./
@@ -58,5 +48,11 @@ RUN php artisan route:clear
 RUN php artisan cache:clear
 
 RUN php artisan optimize:clear
+
+# Copy existing application directory permissions
+COPY --chown=www:www . /var/www
+
+# Change current user to www
+USER www
 
 CMD ["php-fpm"]
