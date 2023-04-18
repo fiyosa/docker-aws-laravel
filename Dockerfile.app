@@ -8,6 +8,11 @@ COPY --from=node:14.21.3-alpine3.17 /usr/local/bin/node /usr/local/bin/node
 COPY --from=node:14.21.3-alpine3.17 /usr/local/lib/node_modules /usr/local/lib/node_modules
 COPY --from=node:14.21.3-alpine3.17 /opt/yarn-v1.22.19 /opt/yarn-v1.22.19
 
+# Set environment variable untuk Node.js dan Yarn
+ENV PATH="/usr/local/lib/node_modules:/usr/local/bin:${PATH}"
+ENV NODE_PATH="/usr/local/lib/node_modules"
+
+# Instal package Yarn
 RUN ln -s /usr/local/lib/node_modules/npm/bin/npm-cli.js /usr/local/bin/npm \
     && ln -s /usr/local/lib/node_modules/yarn/bin/yarn.js /usr/local/bin/yarn
 
