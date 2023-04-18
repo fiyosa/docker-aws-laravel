@@ -4,17 +4,10 @@ COPY --from=composer:2.5.5 /usr/bin/composer /usr/bin/composer
 RUN chmod +x /usr/bin/composer
 ENV COMPOSER_ALLOW_SUPERUSER 1
 
-COPY --from=node:14.21.3-alpine3.17 /usr/local/bin/node /usr/local/bin/node
-COPY --from=node:14.21.3-alpine3.17 /usr/local/lib/node_modules /usr/local/lib/node_modules
-COPY --from=node:14.21.3-alpine3.17 /opt/yarn-v1.22.19 /opt/yarn-v1.22.19
+COPY --from=node:14.21.3-alpine3.17 /usr/local/bin/node /usr/local/bin/
 
-# Set environment variable untuk Node.js dan Yarn
-ENV PATH="/usr/local/lib/node_modules:/usr/local/bin:${PATH}"
-ENV NODE_PATH="/usr/local/lib/node_modules"
-
-# Instal package Yarn
-RUN ln -s /usr/local/lib/node_modules/npm/bin/npm-cli.js /usr/local/bin/npm \
-    && ln -s /usr/local/lib/node_modules/yarn/bin/yarn.js /usr/local/bin/yarn
+# Menambahkan jalur direktori bin Node.js ke variabel lingkungan PATH
+ENV PATH="/usr/local/bin:${PATH}"
 
 # Install dependensi PHP dan PHP-FPM
 RUN apt-get update && apt-get install -y \
