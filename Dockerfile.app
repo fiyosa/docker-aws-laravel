@@ -4,8 +4,12 @@ COPY --from=composer:2.5.5 /usr/bin/composer /usr/bin/composer
 RUN chmod +x /usr/bin/composer
 ENV COMPOSER_ALLOW_SUPERUSER 1
 
-COPY --from=node:14.21.3-alpine3.17 /usr/local/bin/node /usr/bin/node
-RUN chmod +x /usr/bin/node
+COPY --from=node:14.21.3-alpine3.17 /usr/local/bin/node /usr/local/bin/node
+COPY --from=node:14.21.3-alpine3.17 /usr/local/lib/node_modules /usr/local/lib/node_modules
+COPY --from=node:14.21.3-alpine3.17 /opt/yarn-v1.22.19 /opt/yarn-v1.22.19
+
+RUN ln -s /usr/local/lib/node_modules/npm/bin/npm-cli.js /usr/local/bin/npm \
+    && ln -s /usr/local/lib/node_modules/yarn/bin/yarn.js /usr/local/bin/yarn
 
 # Install dependensi PHP dan PHP-FPM
 RUN apt-get update && apt-get install -y \
