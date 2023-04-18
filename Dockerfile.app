@@ -32,7 +32,7 @@ RUN groupadd -g 1000 www
 RUN useradd -u 1000 -ms /bin/bash -g www www
 
 # Set working directory
-WORKDIR /var/www/
+WORKDIR /var/www
 
 # Copy file composer.json dan composer.lock ke dalam container
 COPY ./ ./
