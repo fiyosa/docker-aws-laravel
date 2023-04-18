@@ -1,9 +1,12 @@
-FROM node:14.21.3-alpine3.17 AS node
 FROM php:8.1.18-fpm
 
 COPY --from=composer:2.5.5 /usr/bin/composer /usr/bin/composer
 RUN chmod +x /usr/bin/composer
 ENV COMPOSER_ALLOW_SUPERUSER 1
+
+COPY --from=14.21.3-slim /usr/local/lib/node_modules /usr/local/lib/node_modules
+COPY --from=14.21.3-slim /usr/local/bin/node /usr/local/bin/node
+RUN ln -s /usr/local/lib/node_modules/npm/bin/npm-cli.js /usr/local/bin/npm
 
 # Install dependensi PHP dan PHP-FPM
 RUN apt-get update && apt-get install -y \
@@ -11,10 +14,6 @@ RUN apt-get update && apt-get install -y \
     zip \
     unzip \
     libpq-dev
-    
-COPY --from=node /usr/local/lib/node_modules /usr/local/lib/node_modules
-COPY --from=node /usr/local/bin/node /usr/local/bin/node
-RUN ln -s /usr/local/lib/node_modules/npm/bin/npm-cli.js /usr/local/bin/npm
 
 # RUN docker-php-ext-install pdo pdo_pgsql
 
