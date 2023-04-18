@@ -20,8 +20,8 @@ RUN apt-get update && apt-get install -y \
 RUN apt-get clean && rm -rf /var/lib/apt/lists/*
 
 # Add user for laravel application
-# RUN groupadd -g 1000 www
-# RUN useradd -u 1000 -ms /bin/bash -g www www
+RUN groupadd -g 1000 www
+RUN useradd -u 1000 -ms /bin/bash -g www www
 
 # Set working directory
 WORKDIR /var/www/
@@ -35,7 +35,7 @@ RUN composer install --no-scripts --no-progress --no-interaction
 # Autoload Composer
 RUN composer dump-autoload --optimize
 
-RUN sudo chmod -R 777 storage && sudo chmod -R 777 bootstrap/cache
+# RUN sudo chmod -R 777 storage && sudo chmod -R 777 bootstrap/cache
 
 RUN php artisan route:clear
 
@@ -44,9 +44,9 @@ RUN php artisan cache:clear
 RUN php artisan optimize:clear
 
 # Copy existing application directory permissions
-# COPY --chown=www:www . /var/www
+COPY --chown=www:www . /var/www
 
 # Change current user to www
-# USER www
+USER www
 
 CMD ["php-fpm", "-y", "/usr/local/etc/php-fpm.conf", "-R"]
