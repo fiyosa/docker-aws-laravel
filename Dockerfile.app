@@ -25,13 +25,13 @@ WORKDIR /var/www/html
 COPY ./ ./
 
 # Install dependencies menggunakan Composer
-RUN composer install --no-scripts --no-autoloader --no-progress --no-interaction
+RUN composer install --no-scripts --no-progress --no-interaction
+
+# Autoload Composer
+RUN composer dump-autoload --optimize
 
 RUN php artisan route:clear
 
 RUN php artisan cache:clear
 
 RUN php artisan optimize:clear
-
-# Autoload Composer
-RUN composer dump-autoload --optimize
