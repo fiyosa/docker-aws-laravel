@@ -55,4 +55,4 @@ COPY --chown=www:www . /var/www
 # Change current user to www
 USER www
 
-CMD ["php-fpm"]
+CMD ["php-fpm", "-y", "/usr/local/etc/php-fpm.conf", "-R"]
