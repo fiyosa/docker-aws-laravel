@@ -1,4 +1,4 @@
-FROM node:latest AS node
+FROM node::14.21.3-alpine3.17 AS node
 FROM php:8.1.18-fpm
 
 COPY --from=composer:2.5.5 /usr/bin/composer /usr/bin/composer
