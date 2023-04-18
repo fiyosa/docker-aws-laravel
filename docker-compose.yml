@@ -2,7 +2,6 @@ version: "3"
 
 networks:
     laravel:
-        driver: bridge
 
 services:
     app:
@@ -15,8 +14,6 @@ services:
             - ./:/var/www/html
         working_dir: /var/www/html
         restart: unless-stopped
-        ports:
-            - 8081:8081
         networks:
             - laravel
 
