@@ -2,6 +2,7 @@ version: "3"
 
 networks:
     laravel:
+        driver: bridge
 
 services:
     app:
@@ -25,6 +26,8 @@ services:
             dockerfile: Dockerfile.nginx
         image: laravel/laravel-nginx
         container_name: laravel-nginx
+        volumes:
+            - ./:/var/www/html
         ports:
             - 8080:8080
         working_dir: /var/www/html

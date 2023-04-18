@@ -27,15 +27,11 @@ COPY ./ ./
 # Install dependencies menggunakan Composer
 RUN composer install --no-scripts --no-autoloader --no-progress --no-interaction
 
-# Autoload Composer
-RUN composer dump-autoload --optimize
-
 RUN php artisan route:clear
 
 RUN php artisan cache:clear
 
 RUN php artisan optimize:clear
 
-EXPOSE 8081
-
-CMD ["php-fpm"]
+# Autoload Composer
+RUN composer dump-autoload --optimize
