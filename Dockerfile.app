@@ -18,8 +18,12 @@ RUN apt-get update && apt-get install -y \
 
 RUN docker-php-ext-install pdo pdo_pgsql
 
+# Add user for laravel application
+RUN groupadd -g 1000 www
+RUN useradd -u 1000 -ms /bin/bash -g www www
+
 # Set working directory
-WORKDIR /var/www/html
+WORKDIR /var/www/
 
 # Copy file composer.json dan composer.lock ke dalam container
 COPY ./ ./
@@ -35,6 +39,12 @@ RUN php artisan route:clear
 RUN php artisan cache:clear
 
 RUN php artisan optimize:clear
+
+# Copy existing application directory permissions
+COPY --chown=www:www . /var/www
+
+# Change current user to www
+USER www
 
 EXPOSE 8081
 
