@@ -8,6 +8,9 @@ services:
         build:
             context: ./
             dockerfile: Dockerfile.app
+            args:
+                - UID=${UID:-1000}
+                - GID=${GID:-1000}
         image: laravel/laravel-app
         container_name: laravel-app
         volumes:
@@ -21,6 +24,9 @@ services:
         build:
             context: ./
             dockerfile: Dockerfile.nginx
+            args:
+                - UID=${UID:-1000}
+                - GID=${GID:-1000}
         image: laravel/laravel-nginx
         container_name: laravel-nginx
         tty: true
